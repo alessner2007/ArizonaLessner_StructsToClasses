@@ -1,0 +1,122 @@
+/////////////////////////////////////////////////////////
+// starting Final project
+// Step 1: Lower the number of comparisons from 16,250 to 1,600
+// Step 2: Modify your solution to display number of comparisons done in the selection sort (10/26/26) 
+// Step 3: Modify your program to randomly generate 50 ints and store them in the array list (10/28/26)
+// Author; Arizona Lessner
+// Date: 10/21/2026 
+// CLC's 1224
+//
+/////////////////////////////////////////////////////////
+
+/* 
+   10 17 23 65 34 6 18 27 35 110 75 25 100 24 19 67 45 88 70 96 41 36 72 150 125 25 77 
+   200 90 166 139 55 31 8 29 119 126 137 34 62 135 121 108 197 45 35 24 1 16 43
+*/
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+const int LIST_SIZE = 50;
+
+int selectionSort(int list[], int length);
+bool arraySorted(int list[], int length);
+
+int main()
+{
+    int list[LIST_SIZE];
+
+    // Generate random integers
+    srand(time(0));
+
+    for (int i = 0; i < LIST_SIZE; i++)
+        list[i] = rand() % 100 + 1;
+
+    cout << "Array list is in ascending order? "
+         << arraySorted(list, LIST_SIZE) << endl;
+
+    // call the sorting algorithm
+    int comparisons = selectionSort(list, LIST_SIZE);
+
+    cout << "Array list is in ascending order? "
+         << arraySorted(list, LIST_SIZE) << endl;
+
+    //
+    // Variable used to count # of time if statement is performed
+    // when the number of ints is 50
+    //
+    int count = 0;
+
+    for (int i = 0; i < LIST_SIZE; i++)
+    {
+        bool found = false;
+
+        // Find pairs
+        for (int j = 0; j < i; j++)
+        {
+            for (int k = j + 1; k < i; k++)
+            {
+                count++;
+
+                if (list[i] == list[j] + list[k])
+                {
+                    found = true;
+                }
+            }
+        }
+    }
+
+    cout << "Number of times the if-statement was performed with 50 ints: "
+         << count << endl;
+
+    cout << "Comparisons performed in selection sort "
+         << comparisons << endl;
+
+    return 0;
+}
+
+// Selection sort function
+int selectionSort(int list[], int length)
+{
+    int minIndex, temp;
+    int comparisons = 0;
+
+    for (int i = 0; i < length - 1; i++)
+    {
+        minIndex = i;
+
+        // Find the index of the smallest element
+        for (int j = i + 1; j < length; j++)
+        {
+            comparisons++;
+
+            if (list[j] < list[minIndex])
+                minIndex = j;
+        }
+
+        // Swap the smallest element
+        if (minIndex != i)
+        {
+            temp = list[i];
+            list[i] = list[minIndex];
+            list[minIndex] = temp;
+        }
+    }
+
+    return comparisons;
+}
+
+// This function is used to check if the array is in ascending order
+bool arraySorted(int list[], int length)
+{
+    for (int i = 0; i < length - 1; i++)
+    {
+        if (list[i] > list[i + 1])
+            return false;
+    }
+
+    return true;
+}
